@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Furasek 🍓</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="background-effects.css">
+<link rel="stylesheet" href="click-wave.css">
+
+<style>
+#music-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #313030;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+#music-toggle:hover { background: #4b484a; }
+
+/* Canvas visualizer ustawienie */
+#circle-visualizer{
+  position:fixed;
+  right:30px;
+  bottom:100px;
+  width:150px;
+  height:150px;
+  pointer-events:none;
+  z-index:50;
+}
+</style>
+</head>
+<body>
+
+<!-- Overlay startowy -->
+<div id="intro-overlay">
+  <div id="intro-text">Kliknij aby zobaczyć opis</div>
+</div>
+
+<div class="container">
+
+  <!-- Lista znajomych -->
+  <div class="friendship-box">
+    <h2>Friendship 💖</h2>
+
+    <div class="friend-category">
+      <div class="category-title">Love 💞</div>
+      <div class="friend-list">
+        <div class="friend-item">Desio 💘</div>
+      </div>
+    </div>
+
+    <div class="friend-category">
+      <div class="category-title">Best friends 🩵</div>
+      <div class="friend-list">
+        <div class="friend-item">Tamaruś</div>
+        <div class="friend-item">Bibo</div>
+        <div class="friend-item">Klon</div>
+        <div class="friend-item">Polak</div>
+        <div class="friend-item">Yukisia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Karta Pearla -->
+  <div class="card-wrapper">
+    <div class="card">
+      <div class="card-inner">
+
+        <div class="card-front">
+          <div class="front-gif"></div>
+
+          <div class="front-content">
+            <img class="avatar" src="https://i.imgur.com/WoOifD1.png">
+
+            <h1>Pearl 🍓💗</h1>
+
+            <p class="desc">
+            ✨ 18 lat<br>
+            🌈 Homosexual • Single
+            </p>
+
+            <p class="about">
+              💗 Pearl bardzo lubi poznawać nowe osóbki<br>
+              🍓 Jest bardzo miły i wrażliwy<br>
+              🥺 Łatwo się zawstydza i rumieni<br>
+              😎 Kiedy trzeba jest z niego cwaniaczek
+            </p>
+
+            <div class="discord-box">
+              <img class="discord-icon"
+              src="https://static.vecteezy.com/system/resources/previews/065/386/533/non_2x/discord-circle-logo-icon-app-transparent-background-premium-social-media-design-for-digital-download-free-png.png">
+
+              <div class="discord-tag">wiewior._</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-back">
+          <p class="back-text"></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Przycisk muzyki -->
+<button id="music-toggle">🔊</button>
+
+<!-- Audio -->
+<audio id="background-music" autoplay loop>
+  <source src="background.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Canvas visualizer po prawej stronie -->
+<canvas id="circle-visualizer"></canvas>
+
+<!-- Skrypty -->
+<script src="cursor-smudge.js"></script>
+<script src="background-effects.js"></script>
+<script src="click-wave.js"></script>
+<script src="music-control.js"></script>
+<script src="circle-visualizer.js"></script>
+
+<script>
+const overlay = document.getElementById('intro-overlay');
+
+overlay.addEventListener('click', () => {
+  overlay.classList.add('hidden');
+});
+
+window.addEventListener('load', () => {
+  const card = document.querySelector('.card');
+  const backText = document.querySelector('.back-text');
+
+  const textToType = `Pearl to uroczy i wrażliwy chłopak, który uwielbia poznawać nowe osoby i spędzać z nimi czas w przyjaznej atmosferze. Każdy, kto go pozna, od razu zauważa jego ciepło i empatię – zawsze słucha innych z uwagą i potrafi pocieszyć, gdy ktoś ma gorszy dzień.
+
+Uwielbia drobne przyjemności, serdeczne gesty i szczere komplementy, które sprawiają, że rumieni się z uroczego zawstydzenia. Pearl ma też w sobie odrobinę cwaniackiego uroku, dzięki czemu potrafi sprytnie poradzić sobie w trudnych sytuacjach.
+
+Jego energia jest lekka i radosna, a każdy moment spędzony w jego towarzystwie nabiera ciepła i pozytywnej magii. Pearl to połączenie delikatności, wrażliwości i subtelnego humoru – prawdziwy skarb dla tych, którzy chcą go bliżej poznać. 🍓💗`;
+
+  let typed = false;
+
+  card.addEventListener('click', () => {
+    card.classList.toggle('flipped');
+
+    if(!typed && card.classList.contains('flipped')){
+      typed = true;
+      let index = 0;
+
+      function typeWriter(){
+        if(index < textToType.length){
+          backText.textContent += textToType.charAt(index);
+          index++;
+          setTimeout(typeWriter,35);
+        }
+      }
+
+      setTimeout(typeWriter,500);
+    }
+  });
+});
+</script>
+
+</body>
+</html>

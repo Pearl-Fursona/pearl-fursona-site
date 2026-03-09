@@ -1,0 +1,74 @@
+/* subtelne kropki / wzorki w tle */
+.background-pattern {
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: patternMove 60s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes patternMove {
+  0% { transform: translate(0,0); }
+  100% { transform: translate(100px,100px); }
+}
+
+/* unoszÄ…ce siÄ™ serduszka */
+.background-heart {
+  position: fixed;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  z-index: 0;
+  font-size: 14px;
+  opacity: 0.8;
+  animation: heartFloat linear infinite;
+  user-select: none;
+}
+
+@keyframes heartFloat {
+  0% {
+    transform: translateY(100vh) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) scale(1) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* pulsujÄ…ce ksztaÅ‚ty */
+.pulse-shape {
+  position: fixed;
+  width: 150px;
+  height: 150px;
+  background: rgba(255,255,255,0.2);
+  z-index: 0;
+  pointer-events: none;
+  animation: pulseScale 4s ease-in-out infinite;
+}
+
+.pulse-shape-left {
+  bottom: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.pulse-shape-right {
+  top: 10%;
+  right: 10%;
+  animation-delay: 1s;
+}
+
+@keyframes pulseScale {
+  0% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 0.2; }
+}
