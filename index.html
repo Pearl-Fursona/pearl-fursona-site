@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="click-wave.css">
 
 <style>
+/* Przycisk muzyki */
 #music-toggle {
   position: fixed;
   top: 20px;
@@ -24,7 +25,7 @@
 }
 #music-toggle:hover { background: #4b484a; }
 
-/* Canvas visualizer ustawienie */
+/* Canvas visualizer */
 #circle-visualizer{
   position:fixed;
   right:30px;
@@ -33,6 +34,82 @@
   height:150px;
   pointer-events:none;
   z-index:50;
+}
+
+/* Ramka muzyczna po prawej (mniejsza, niżej i hover) */
+.music-frame {
+  position: fixed;
+  right: 30px;
+  top: 65%; /* przesunięcie w dół o ok. 30% */
+  transform: translateY(-50%);
+  width: 200px;
+  background: #111;
+  border-radius: 15px;
+  border: 2px solid #4b0082;
+  padding: 15px;
+  box-shadow: 0 0 15px rgba(75,0,130,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 20;
+  transition: all 0.3s ease;
+}
+
+.music-frame:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 20px #8a2be2, 0 0 30px #4b0082;
+}
+
+/* Wiersz tytułu z obrazkiem */
+.music-frame .music-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.music-frame img.cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.music-title-author {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.music-title {
+  font-family:'Caveat', cursive;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  transform: rotate(-2deg);
+  text-shadow: 0 0 4px #4b0082, 0 0 8px #8a2be2;
+}
+
+.music-author {
+  font-family:'Patrick Hand', cursive;
+  font-size: 13px;
+  color: #ffe3f1;
+}
+
+/* Wizualizer jako obrazek (GIF lub PNG) */
+.music-visualizer {
+  width: 100%;
+  height: 25px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.music-visualizer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
 </head>
@@ -103,11 +180,39 @@
         </div>
 
         <div class="card-back">
-          <p class="back-text"></p>
+          <!-- Sekcje z opisem -->
+          <div class="info-section">
+            <div class="info-title">Charakter ⭐</div>
+            <div class="info-text">Pearl jest ciepły, wrażliwy i zawsze gotowy pomóc przyjaciołom. 🌈</div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-title">Zainteresowania ⭐</div>
+            <div class="info-text">Uwielbia poznawać nowych ludzi, gry i słodkości 🍓.</div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-title">Opis ⭐</div>
+            <div class="info-text">Uroczy, wrażliwy i pełen energii chłopak, który uwielbia poznawać nowych ludzi i spędzać z nimi czas w przyjaznej atmosferze, kocha słodkości i małe przygody, łatwo się rumieni przy komplementach, ale kryje w sobie sprytnego cwaniaczka, który potrafi rozbawić i pocieszyć każdego, a jego obecność sprawia, że świat staje się odrobinę cieplejszy i bardziej kolorowy.</div>
+          </div>
         </div>
 
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Ramka muzyczna -->
+<div class="music-frame">
+  <div class="music-row">
+    <img class="cover" src="https://i.scdn.co/image/ab6761610000e5eb49675cf5c806dc43ae34eeed" alt="Cover">
+    <div class="music-title-author">
+      <div class="music-title">Sól</div>
+      <div class="music-author">by YoungMulti</div>
+    </div>
+  </div>
+  <div class="music-visualizer">
+    <img src="https://cdn.prod.website-files.com/6488cc2b899091ddde57a95d/64a6b0e0740e455bda54f399_Waveform.gif" alt="Audio Visualizer">
   </div>
 </div>
 
@@ -128,44 +233,13 @@
 <script src="click-wave.js"></script>
 <script src="music-control.js"></script>
 <script src="circle-visualizer.js"></script>
+<script src="script.js"></script>
 
 <script>
 const overlay = document.getElementById('intro-overlay');
 
 overlay.addEventListener('click', () => {
   overlay.classList.add('hidden');
-});
-
-window.addEventListener('load', () => {
-  const card = document.querySelector('.card');
-  const backText = document.querySelector('.back-text');
-
-  const textToType = `Pearl to uroczy i wrażliwy chłopak, który uwielbia poznawać nowe osoby i spędzać z nimi czas w przyjaznej atmosferze. Każdy, kto go pozna, od razu zauważa jego ciepło i empatię – zawsze słucha innych z uwagą i potrafi pocieszyć, gdy ktoś ma gorszy dzień.
-
-Uwielbia drobne przyjemności, serdeczne gesty i szczere komplementy, które sprawiają, że rumieni się z uroczego zawstydzenia. Pearl ma też w sobie odrobinę cwaniackiego uroku, dzięki czemu potrafi sprytnie poradzić sobie w trudnych sytuacjach.
-
-Jego energia jest lekka i radosna, a każdy moment spędzony w jego towarzystwie nabiera ciepła i pozytywnej magii. Pearl to połączenie delikatności, wrażliwości i subtelnego humoru – prawdziwy skarb dla tych, którzy chcą go bliżej poznać. 🍓💗`;
-
-  let typed = false;
-
-  card.addEventListener('click', () => {
-    card.classList.toggle('flipped');
-
-    if(!typed && card.classList.contains('flipped')){
-      typed = true;
-      let index = 0;
-
-      function typeWriter(){
-        if(index < textToType.length){
-          backText.textContent += textToType.charAt(index);
-          index++;
-          setTimeout(typeWriter,35);
-        }
-      }
-
-      setTimeout(typeWriter,500);
-    }
-  });
 });
 </script>
 
