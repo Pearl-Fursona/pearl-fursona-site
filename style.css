@@ -68,10 +68,10 @@ body::before{
   backface-visibility:hidden;
   border-radius:25px;
   box-shadow:
-    0 0 20px #ff4fa3,
-    0 0 40px #ff6bb5,
-    0 0 70px rgba(255,80,150,0.6);
-  border:1px solid #ff6bb5;
+    0 0 20px #484848,
+    0 0 40px #0f0f0f,
+    0 0 70px rgba(115, 114, 115, 0.6);
+  border:1px solid #000000;
   background:#0b0b0b;
   display:flex;
   flex-direction:column;
