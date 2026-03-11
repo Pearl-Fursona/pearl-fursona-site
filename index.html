@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Furasek 🍓</title>
+<title>Pearl 🍓</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="background-effects.css">
@@ -36,11 +36,11 @@
   z-index:50;
 }
 
-/* Ramka muzyczna po prawej (mniejsza, niżej i hover) */
+/* Ramka muzyczna po prawej */
 .music-frame {
   position: fixed;
   right: 30px;
-  top: 65%; /* przesunięcie w dół o ok. 30% */
+  top: 65%;
   transform: translateY(-50%);
   width: 200px;
   background: #111;
@@ -54,35 +54,29 @@
   z-index: 20;
   transition: all 0.3s ease;
 }
-
 .music-frame:hover {
   background: #fff;
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 0 20px #8a2be2, 0 0 30px #4b0082;
 }
-
-/* Wiersz tytułu z obrazkiem */
 .music-frame .music-row {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
 }
-
 .music-frame img.cover {
   width: 60px;
   height: 60px;
   border-radius: 12px;
   object-fit: cover;
 }
-
 .music-title-author {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 4px;
 }
-
 .music-title {
   font-family:'Caveat', cursive;
   font-size: 18px;
@@ -91,25 +85,130 @@
   transform: rotate(-2deg);
   text-shadow: 0 0 4px #4b0082, 0 0 8px #8a2be2;
 }
-
 .music-author {
   font-family:'Patrick Hand', cursive;
   font-size: 13px;
   color: #ffe3f1;
 }
-
-/* Wizualizer jako obrazek (GIF lub PNG) */
 .music-visualizer {
   width: 100%;
   height: 25px;
   border-radius: 8px;
   overflow: hidden;
 }
-
 .music-visualizer img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Hearts particle canvas */
+.hearts-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* SIDE PANELS */
+.side-panels {
+  position: fixed;
+  left: 20px;
+  top: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 30;
+  font-family: 'Caveat', cursive;
+}
+
+.panel {
+  position: relative;
+  background-image: url("https://st.depositphotos.com/53748278/54683/i/450/depositphotos_546833248-stock-photo-amazing-mystical-rising-fog-forest.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  overflow: visible;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  padding: 8px 12px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panel-label {
+  white-space: nowrap;
+  font-weight: bold;
+  transition: all 0.35s ease;
+}
+
+/* PANEL CONTENT – centrowanie wszystkiego w środku */
+.panel-content {
+  position: absolute;
+  left: 140px;
+  top: 50%;
+  min-width: 200px;
+  max-width: 220px;
+  transform: translateY(-50%) translateX(-20px);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 15px;
+  transition: all 0.5s ease;
+  background: rgba(30,30,30,0.95);
+  padding: 10px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
+}
+
+.panel.clicked .panel-content {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+.panel-content video,
+.panel-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  margin: 0 auto;
+}
+
+/* Efekt rozbłysku po kliknięciu */
+.panel.clicked::after,
+.panel.flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.4);
+  opacity: 0;
+  animation: flash 0.5s forwards;
+}
+
+@keyframes flash {
+  0% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.2); }
+}
+
+/* Motto mniejsze litery */
+.motto-text {
+  font-size: 14px;
+  white-space: nowrap;
+  font-family:'Patrick Hand', cursive;
 }
 </style>
 </head>
@@ -120,28 +219,36 @@
   <div id="intro-text">Kliknij aby zobaczyć opis</div>
 </div>
 
+<!-- Znak wodny -->
+<div id="watermark">
+  dev by: <span>wiewior._</span>
+  <canvas id="watermark-canvas"></canvas>
+</div>
+
 <div class="container">
 
   <!-- Lista znajomych -->
   <div class="friendship-box">
     <h2>Friendship 💖</h2>
 
-    <div class="friend-category">
+    <div class="friend-category" data-color="255,0,0">
       <div class="category-title">Love 💞</div>
+      <canvas class="hearts-canvas"></canvas>
       <div class="friend-list">
-        <div class="friend-item">Desio 💘</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/CDysDCE.png">Desio 💘</div>
       </div>
     </div>
 
-    <div class="friend-category">
+    <div class="friend-category" data-color="0,150,255">
       <div class="category-title">Best friends 🩵</div>
+      <canvas class="hearts-canvas"></canvas>
       <div class="friend-list">
-        <div class="friend-item">Tamaruś</div>
-        <div class="friend-item">Bibo</div>
-        <div class="friend-item">Klon</div>
-        <div class="friend-item">Polak</div>
-        <div class="friend-item">Yukisia</div>
-        <div class="friend-item">Cadek</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/oizyEga.png">Tamaruś</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/AU0JZTG.png">Bibo</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/UJWLuR5.png">Klon</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/8TjJHLr.png">Polak</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/yJaweef.png">Yukisia</div>
+        <div class="friend-item"><img class="friend-avatar" src="https://i.imgur.com/IgFTzbj.png">Cadek</div>
       </div>
     </div>
   </div>
@@ -153,45 +260,27 @@
 
         <div class="card-front">
           <div class="front-gif"></div>
-
           <div class="front-content">
             <img class="avatar" src="https://i.imgur.com/WoOifD1.png">
-
             <h1>Pearl 🍓💗</h1>
-
-            <p class="desc">
-            ✨ 18 lat<br>
-            🌈 Homosexual • Single
-            </p>
-
-            <p class="about">
-              💗 Pearl bardzo lubi poznawać nowe osóbki<br>
-              🍓 Jest bardzo miły i wrażliwy<br>
-              🥺 Łatwo się zawstydza i rumieni<br>
-              😎 Kiedy trzeba jest z niego cwaniaczek
-            </p>
-
+            <p class="desc">✨ 18 lat<br>🌈 Homosexual • Single</p>
+            <p class="about">💗 Pearl bardzo lubi poznawać nowe osóbki<br>🍓 Jest bardzo miły i wrażliwy<br>🥺 Łatwo się zawstydza i rumieni<br>😎 Kiedy trzeba jest z niego cwaniaczek</p>
             <div class="discord-box">
-              <img class="discord-icon"
-              src="https://static.vecteezy.com/system/resources/previews/065/386/533/non_2x/discord-circle-logo-icon-app-transparent-background-premium-social-media-design-for-digital-download-free-png.png">
-
+              <img class="discord-icon" src="https://static.vecteezy.com/system/resources/previews/065/386/533/non_2x/discord-circle-logo-icon-app-transparent-background-premium-social-media-design-for-digital-download-free-png.png">
               <div class="discord-tag">wiewior._</div>
             </div>
           </div>
         </div>
 
         <div class="card-back">
-          <!-- Sekcje z opisem -->
           <div class="info-section">
             <div class="info-title">Charakter ⭐</div>
             <div class="info-text">Pearl jest ciepły, wrażliwy i zawsze gotowy pomóc przyjaciołom. 🌈</div>
           </div>
-
           <div class="info-section">
             <div class="info-title">Zainteresowania ⭐</div>
             <div class="info-text">Uwielbia poznawać nowych ludzi, gry i słodkości 🍓.</div>
           </div>
-
           <div class="info-section">
             <div class="info-title">Opis ⭐</div>
             <div class="info-text">Uroczy, wrażliwy i pełen energii chłopak, który uwielbia poznawać nowych ludzi i spędzać z nimi czas w przyjaznej atmosferze, kocha słodkości i małe przygody, łatwo się rumieni przy komplementach, ale kryje w sobie sprytnego cwaniaczka, który potrafi rozbawić i pocieszyć każdego, a jego obecność sprawia, że świat staje się odrobinę cieplejszy i bardziej kolorowy.</div>
@@ -201,6 +290,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- Ramka muzyczna -->
@@ -225,10 +315,43 @@
   <source src="background.mp3" type="audio/mpeg">
 </audio>
 
+<!-- NOWE INTERFEJSY PO LEWEJ -->
+<div class="side-panels">
+
+  <!-- Motto -->
+  <div class="panel motto-panel">
+    <div class="panel-label">Status</div>
+    <div class="panel-content motto-text">Bądź sobą nawet jeśli świat chce inaczej</div>
+  </div>
+
+  <!-- Vibe -->
+  <div class="panel vibe-panel">
+    <div class="panel-label">Mój Vibe</div>
+    <div class="panel-content">
+      <video id="vibe-video" style="border-radius:15px; display:block;" preload="metadata" playsinline>
+        <source src="mojvibe.mp4" type="video/mp4">
+        Twoja przeglądarka nie obsługuje wideo.
+      </video>
+    </div>
+  </div>
+
+  <!-- Discord -->
+  <div class="panel discord-panel">
+    <div class="panel-label">Discord</div>
+    <div class="panel-content">
+      <img src="discord.png" style="border-radius:15px;" alt="Discord">
+    </div>
+  </div>
+
+</div>
+
 <!-- Canvas visualizer po prawej stronie -->
 <canvas id="circle-visualizer"></canvas>
 
-<!-- Skrypty -->
+<!-- Hover i Click sounds -->
+<audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
+<audio id="click-sound" src="click.mp3" preload="auto"></audio>
+
 <script src="cursor-smudge.js"></script>
 <script src="background-effects.js"></script>
 <script src="click-wave.js"></script>
@@ -237,11 +360,129 @@
 <script src="script.js"></script>
 
 <script>
+// Overlay
 const overlay = document.getElementById('intro-overlay');
+overlay.addEventListener('click', () => overlay.classList.add('hidden'));
 
-overlay.addEventListener('click', () => {
-  overlay.classList.add('hidden');
+// Hearts particle animation for friend list
+document.querySelectorAll('.friend-category').forEach(cat=>{
+  const canvas = cat.querySelector('.hearts-canvas');
+  const ctx = canvas.getContext('2d');
+  let hearts=[];
+  function resizeCanvas(){canvas.width=cat.offsetWidth;canvas.height=cat.offsetHeight;}
+  resizeCanvas();
+  window.addEventListener('resize',resizeCanvas);
+  function createHeart(x,y,color){return {x,y,size:Math.random()*6+4,vx:(Math.random()-0.5)*4,vy:(Math.random()-0.5)*4,alpha:0.75,color};}
+  function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);hearts.forEach((h,i)=>{h.x+=h.vx;h.y+=h.vy;h.alpha-=0.02;if(h.alpha<=0)hearts.splice(i,1);ctx.fillStyle=`rgba(${h.color},${h.alpha})`;ctx.beginPath();ctx.arc(h.x,h.y,h.size,0,Math.PI*2);ctx.fill();});requestAnimationFrame(animate);}
+  animate();
+  cat.querySelectorAll('.friend-item').forEach(item=>{
+    let hovered=false;
+    item.addEventListener('mouseenter',e=>{
+      if(hovered)return; hovered=true;
+      const rect=canvas.getBoundingClientRect();
+      let color=cat.dataset.color||'0,150,255';
+      for(let i=0;i<3;i++){hearts.push(createHeart(e.clientX-rect.left,e.clientY-rect.top,color));}
+    });
+    item.addEventListener('mouseleave',()=>{hovered=false;});
+  });
 });
+
+
+// Hover i click sounds
+const hoverSound=document.getElementById('hover-sound');
+const clickSound=document.getElementById('click-sound');
+document.querySelectorAll('.friend-item, .card, #music-toggle, .discord-box, .panel').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{hoverSound.currentTime=0;hoverSound.play();});
+  el.addEventListener('click',()=>{clickSound.currentTime=0;clickSound.play();});
+});
+
+// SIDE PANELS CLICK LOGIC
+const musicEl = document.getElementById('background-music');
+const vibePanel = document.querySelector('.vibe-panel');
+const discordPanel = document.querySelector('.discord-panel');
+const vibeVideo = document.getElementById('vibe-video');
+
+function togglePanel(panel){
+  panel.addEventListener("click", () => {
+    panel.classList.add("flash")
+    setTimeout(()=>panel.classList.remove("flash"),400)
+
+    const isOpen = panel.classList.contains("clicked")
+
+    // ZAMKNIJ WSZYSTKIE PANELS i zatrzymaj wszystkie wideo
+    document.querySelectorAll(".panel").forEach(p=>{
+      p.classList.remove("clicked")
+      const vid = p.querySelector("video")
+      if(vid) vid.pause()
+    })
+
+    // Przywróć muzykę
+    if(musicEl) musicEl.volume = 1
+
+    // Otwórz kliknięty panel jeśli wcześniej był zamknięty
+    if(!isOpen) panel.classList.add("clicked")
+
+    // OBSŁUGA VIDEO dla vibePanel
+    if(panel === vibePanel && !isOpen){
+      vibeVideo.play()
+      if(musicEl) musicEl.volume = 0
+    }
+  })
+}
+
+togglePanel(vibePanel)
+togglePanel(discordPanel)
+togglePanel(document.querySelector(".motto-panel"))
+
+// Efekt wybuchu białych particle przy hoverze paneli
+document.querySelectorAll('.panel').forEach(panel => {
+  const canvas = document.createElement('canvas');
+  canvas.classList.add('panel-canvas');
+  panel.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = panel.offsetWidth;
+    canvas.height = panel.offsetHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function createParticle() {
+    const x = panel.offsetWidth / 2;
+    const y = panel.offsetHeight / 2;
+    const angle = Math.random() * 2 * Math.PI;
+    const speed = Math.random() * 3 + 1;
+    const vx = Math.cos(angle) * speed;
+    const vy = Math.sin(angle) * speed;
+    const size = Math.random() * 4 + 2;
+    return {x, y, vx, vy, size, alpha: 1};
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.03;
+      if(p.alpha <= 0) particles.splice(i,1);
+      else {
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+        ctx.fill();
+      }
+    });
+    if(particles.length) requestAnimationFrame(animateParticles);
+  }
+
+  panel.addEventListener('mouseenter', () => {
+    for(let i=0; i<15; i++) particles.push(createParticle());
+    animateParticles();
+  });
+});
+
 </script>
 
 </body>
