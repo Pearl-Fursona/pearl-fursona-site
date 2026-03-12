@@ -22,6 +22,7 @@ body::before{
 
 .container{
   position:relative;
+  z-index: 10;
   width:400px;
   display:flex;
   justify-content:center;
@@ -34,7 +35,7 @@ body::before{
   display:flex;
   justify-content:center;
   align-items:center;
-  z-index:2;
+  z-index:10;
 }
 
 .card{
@@ -200,7 +201,6 @@ h1{
   transform:translateX(40px);
 }
 
-/* BACK */
 .card-back{
   width:100%;
   height:100%;
@@ -219,14 +219,12 @@ h1{
   gap:20px;
   overflow-y:auto;
 
-  /* tło na całą kartę */
   background: url('https://img.freepik.com/premium-photo/abstract-black-white-landscape-with-fog-forest-rodnei-mountains_1610689-597.jpg?semt=ais_hybrid&w=740&q=80') no-repeat center center;
   background-size: cover;
-  background-color: rgba(0, 0, 0, 0.3); /* 0.3 = lekko przyciemnione */
+  background-color: rgba(0, 0, 0, 0.3); 
   background-blend-mode: darken;
 }
 
-/* INFO SECTIONS (tylna karta) */
 .info-section{
   opacity:0;
   transform:translateY(-50px);
@@ -238,7 +236,6 @@ h1{
   cursor:pointer;
 }
 
-/* Nazwa kategorii */
 .info-title{
   font-family:'Caveat', cursive;
   font-weight:bold;
@@ -249,7 +246,6 @@ h1{
   text-shadow: 0 0 6px #ffffff,0 0 10px #ff4fa3;
 }
 
-/* Tekst kategorii */
 .info-text{
   font-family:'Patrick Hand', cursive;
   font-size:15px;
@@ -262,7 +258,6 @@ h1{
   transition: all 0.3s ease;
 }
 
-/* Animacja spadania */
 .drop{
   animation:dropDown 0.7s ease forwards;
 }
@@ -272,16 +267,15 @@ h1{
   to{ opacity:1; transform:translateY(0);}
 }
 
-/* Hover glow i lekki ruch */
 .card.flipped .info-section:hover .info-text{
   text-shadow:0 0 6px #ff6bb5,0 0 12px #ff4fa3;
   color:#ffd6ec;
   transform: translateY(-2px);
 }
 
-/* FRIENDSHIP BOX */
 .friendship-box{
   position:absolute;
+  z-index: 10;
   left:-230px;
   top:10px;
   width:200px;
@@ -336,7 +330,6 @@ h1{
   box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
-/* OVERLAY */
 #intro-overlay{
   position:fixed;
   inset:0;
@@ -361,18 +354,6 @@ h1{
   text-align:center;
 }
 
-/* CIRCLE VISUALIZER */
-#circle-visualizer{
-  position:fixed;
-  right:30px;
-  bottom:100px;
-  width:150px;
-  height:150px;
-  pointer-events:none;
-  z-index:50;
-}
-
-/* MUSIC BUTTON */
 #music-toggle {
   position: fixed;
   top: 20px;
@@ -387,7 +368,6 @@ h1{
   font-size: 18px;
 }
 
-/* Znak wodny */
 #watermark {
   position: fixed;
   bottom: 20px;
@@ -409,7 +389,6 @@ h1{
   color: #fff;
 }
 
-/* Canvas na particle pod hover */
 #watermark-canvas {
   position: absolute;
   top: 0;
@@ -419,9 +398,8 @@ h1{
   pointer-events: none;
 }
 
-/* Canvas z serduszkami */
 .friend-category {
-  position: relative; /* potrzebne do canvas */
+  position: relative; 
 }
 
 .hearts-canvas {
@@ -430,7 +408,7 @@ h1{
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* żeby nie przeszkadzał w hover */
+  pointer-events: none; 
 }
 
 .friend-avatar {
@@ -484,7 +462,6 @@ h1{
 .panel.flash::after{
   animation: panelFlash .4s ease;
 }
-/* Animacja delikatnego unoszenia paneli po hoverze */
 @keyframes float {
   0% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
@@ -495,7 +472,6 @@ h1{
   animation: float 1s ease-in-out infinite;
 }
 
-/* Canvas particle w panelach */
 .panel-canvas {
   position: absolute;
   inset: 0;

@@ -2,14 +2,13 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Pearl 🍓</title>
+<title>Pearl 🩷🤍</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="background-effects.css">
 <link rel="stylesheet" href="click-wave.css">
 
 <style>
-/* Przycisk muzyki */
 #music-toggle {
   position: fixed;
   top: 20px;
@@ -25,18 +24,6 @@
 }
 #music-toggle:hover { background: #4b484a; }
 
-/* Canvas visualizer */
-#circle-visualizer{
-  position:fixed;
-  right:30px;
-  bottom:100px;
-  width:150px;
-  height:150px;
-  pointer-events:none;
-  z-index:50;
-}
-
-/* Ramka muzyczna po prawej */
 .music-frame {
   position: fixed;
   right: 30px;
@@ -102,7 +89,6 @@
   object-fit: cover;
 }
 
-/* Hearts particle canvas */
 .hearts-canvas {
   position: absolute;
   top: 0;
@@ -113,7 +99,6 @@
   z-index: 10;
 }
 
-/* SIDE PANELS */
 .side-panels {
   position: fixed;
   left: 20px;
@@ -149,7 +134,6 @@
   transition: all 0.35s ease;
 }
 
-/* PANEL CONTENT – centrowanie wszystkiego w środku */
 .panel-content {
   position: absolute;
   left: 140px;
@@ -187,7 +171,6 @@
   margin: 0 auto;
 }
 
-/* Efekt rozbłysku po kliknięciu */
 .panel.clicked::after,
 .panel.flash::after {
   content: "";
@@ -204,7 +187,6 @@
   100% { opacity: 0; transform: scale(1.2); }
 }
 
-/* Motto mniejsze litery */
 .motto-text {
   font-size: 14px;
   white-space: nowrap;
@@ -214,7 +196,6 @@
 </head>
 <body>
 
-<!-- Overlay startowy -->
 <div id="intro-overlay">
   <div id="intro-text">Kliknij aby zobaczyć opis</div>
 </div>
@@ -227,7 +208,6 @@
 
 <div class="container">
 
-  <!-- Lista znajomych -->
   <div class="friendship-box">
     <h2>Friendship 💖</h2>
 
@@ -253,7 +233,6 @@
     </div>
   </div>
 
-  <!-- Karta Pearla -->
   <div class="card-wrapper">
     <div class="card">
       <div class="card-inner">
@@ -293,13 +272,12 @@
 
 </div>
 
-<!-- Ramka muzyczna -->
 <div class="music-frame">
   <div class="music-row">
-    <img class="cover" src="https://i.scdn.co/image/ab6761610000e5eb49675cf5c806dc43ae34eeed" alt="Cover">
+    <img class="cover" src="https://radiotop.pl/wp-content/uploads/2023/08/Bedoes-2115-Dawid-Kwiatkowski-1-1170x647.png" alt="Cover">
     <div class="music-title-author">
-      <div class="music-title">Sól</div>
-      <div class="music-author">by YoungMulti</div>
+      <div class="music-title">Lustro</div>
+      <div class="music-author">by Bedoes2115 & Dawid Kwiatkowski</div>
     </div>
   </div>
   <div class="music-visualizer">
@@ -307,24 +285,82 @@
   </div>
 </div>
 
-<!-- Przycisk muzyki -->
 <button id="music-toggle">🔊</button>
 
-<!-- Audio -->
 <audio id="background-music" autoplay loop>
   <source src="background.mp3" type="audio/mpeg">
 </audio>
 
-<!-- NOWE INTERFEJSY PO LEWEJ -->
 <div class="side-panels">
 
-  <!-- Motto -->
   <div class="panel motto-panel">
     <div class="panel-label">Status</div>
     <div class="panel-content motto-text">Bądź sobą nawet jeśli świat chce inaczej</div>
   </div>
 
-  <!-- Vibe -->
+<div id="clouds-container">
+  <img src="https://symbl-cdn.com/i/webp/74/90ee256e6b65a64ae6afcfa5a437e2.webp" class="cloud" data-speed="0.3" style="top:10%;">
+  <img src="https://symbl-cdn.com/i/webp/74/90ee256e6b65a64ae6afcfa5a437e2.webp" class="cloud" data-speed="0.5" style="top:50%;">
+  <img src="https://symbl-cdn.com/i/webp/74/90ee256e6b65a64ae6afcfa5a437e2.webp" class="cloud" data-speed="0.4" style="top:80%;">
+</div>
+
+<style>
+#clouds-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; 
+  overflow: hidden;
+  z-index: 0; 
+}
+.cloud {
+  position: absolute;
+  width: 150px;
+  opacity: 0.1;
+  user-select: none;
+  will-change: transform;
+}
+</style>
+
+<script>
+(function() {
+  const clouds = document.querySelectorAll('.cloud');
+  const marginLeft = 20; 
+
+  function windowWidth() { return window.innerWidth; }
+
+  clouds.forEach(cloud => {
+    let x = -cloud.offsetWidth - marginLeft - Math.random() * windowWidth();
+    let speed = parseFloat(cloud.dataset.speed);
+    cloud.style.transform = `translateX(${x}px)`;
+
+    function animate() {
+      x += speed;
+
+      if (x > windowWidth()) {
+        x = -cloud.offsetWidth - marginLeft; 
+        cloud.style.top = (10 + Math.random() * 70) + '%';
+        speed = parseFloat(cloud.dataset.speed) * (0.9 + Math.random() * 0.2);
+      }
+
+      cloud.style.transform = `translateX(${x}px)`;
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  });
+
+  window.addEventListener('resize', () => {
+    clouds.forEach(cloud => {
+      let left = parseFloat(cloud.style.transform.replace('translateX(','').replace('px)',''));
+      if (left > windowWidth()) cloud.style.transform = `translateX(${-cloud.offsetWidth - marginLeft}px)`;
+    });
+  });
+})();
+</script>
+
   <div class="panel vibe-panel">
     <div class="panel-label">Mój Vibe</div>
     <div class="panel-content">
@@ -335,7 +371,6 @@
     </div>
   </div>
 
-  <!-- Discord -->
   <div class="panel discord-panel">
     <div class="panel-label">Discord</div>
     <div class="panel-content">
@@ -345,10 +380,6 @@
 
 </div>
 
-<!-- Canvas visualizer po prawej stronie -->
-<canvas id="circle-visualizer"></canvas>
-
-<!-- Hover i Click sounds -->
 <audio id="hover-sound" src="hover.mp3" preload="auto"></audio>
 <audio id="click-sound" src="click.mp3" preload="auto"></audio>
 
@@ -356,15 +387,12 @@
 <script src="background-effects.js"></script>
 <script src="click-wave.js"></script>
 <script src="music-control.js"></script>
-<script src="circle-visualizer.js"></script>
 <script src="script.js"></script>
 
 <script>
-// Overlay
 const overlay = document.getElementById('intro-overlay');
 overlay.addEventListener('click', () => overlay.classList.add('hidden'));
 
-// Hearts particle animation for friend list
 document.querySelectorAll('.friend-category').forEach(cat=>{
   const canvas = cat.querySelector('.hearts-canvas');
   const ctx = canvas.getContext('2d');
@@ -388,7 +416,6 @@ document.querySelectorAll('.friend-category').forEach(cat=>{
 });
 
 
-// Hover i click sounds
 const hoverSound=document.getElementById('hover-sound');
 const clickSound=document.getElementById('click-sound');
 document.querySelectorAll('.friend-item, .card, #music-toggle, .discord-box, .panel').forEach(el=>{
@@ -396,8 +423,8 @@ document.querySelectorAll('.friend-item, .card, #music-toggle, .discord-box, .pa
   el.addEventListener('click',()=>{clickSound.currentTime=0;clickSound.play();});
 });
 
-// SIDE PANELS CLICK LOGIC
 const musicEl = document.getElementById('background-music');
+musicEl.volume = 0.8; // domyślna głośność
 const vibePanel = document.querySelector('.vibe-panel');
 const discordPanel = document.querySelector('.discord-panel');
 const vibeVideo = document.getElementById('vibe-video');
@@ -409,23 +436,23 @@ function togglePanel(panel){
 
     const isOpen = panel.classList.contains("clicked")
 
-    // ZAMKNIJ WSZYSTKIE PANELS i zatrzymaj wszystkie wideo
+    // Zamknij wszystkie panele i zatrzymaj wideo
     document.querySelectorAll(".panel").forEach(p=>{
       p.classList.remove("clicked")
       const vid = p.querySelector("video")
       if(vid) vid.pause()
     })
 
-    // Przywróć muzykę
-    if(musicEl) musicEl.volume = 1
+    // Przywróć muzykę do normalnej głośności
+    if(musicEl) musicEl.volume = 0.3
 
-    // Otwórz kliknięty panel jeśli wcześniej był zamknięty
+    // Otwórz kliknięty panel jeśli był zamknięty
     if(!isOpen) panel.classList.add("clicked")
 
-    // OBSŁUGA VIDEO dla vibePanel
+    // Jeśli otwieramy panel vibe, odtwarzaj wideo i ścisz muzykę
     if(panel === vibePanel && !isOpen){
       vibeVideo.play()
-      if(musicEl) musicEl.volume = 0
+      if(musicEl) musicEl.volume = 0 // wycisz podczas wideo
     }
   })
 }
@@ -434,7 +461,7 @@ togglePanel(vibePanel)
 togglePanel(discordPanel)
 togglePanel(document.querySelector(".motto-panel"))
 
-// Efekt wybuchu białych particle przy hoverze paneli
+
 document.querySelectorAll('.panel').forEach(panel => {
   const canvas = document.createElement('canvas');
   canvas.classList.add('panel-canvas');

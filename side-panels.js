@@ -1,12 +1,9 @@
-// --- SIDE PANELS JS ---
-
 const panelsData = [
   { id: 'motto', title: 'Motto', type: 'text', content: 'Tu bedzie --' },
   { id: 'vibe', title: 'Mój Vibe', type: 'video', content: 'mojvibe.mp4' },
   { id: 'discord', title: 'Discord', type: 'image', content: 'discord.png' }
 ];
 
-// Tworzenie paneli w DOM
 const sidePanelsContainer = document.createElement('div');
 sidePanelsContainer.classList.add('side-panels');
 document.body.appendChild(sidePanelsContainer);
@@ -52,7 +49,6 @@ panelsData.forEach(panel => {
   sidePanelsContainer.appendChild(panelEl);
 });
 
-// Funkcja generująca kwadraciki (particles)
 function explodeParticles(panel, x, y){
   const canvas = panel.querySelector('canvas');
   const ctx = canvas.getContext('2d');
@@ -87,27 +83,23 @@ function explodeParticles(panel, x, y){
   animate();
 }
 
-// Hover effect
 document.querySelectorAll('.side-panel').forEach(panel => {
   let hoverTimeout;
   panel.addEventListener('mouseenter', e => {
     clearTimeout(hoverTimeout);
     panel.classList.add('expanded');
 
-    // Animacja kwadracików od środka
     const rect = panel.getBoundingClientRect();
     explodeParticles(panel, rect.width/2, rect.height/2);
 
-    // Podświetlenie tekstu
     const texts = panel.querySelectorAll('.panel-title, .panel-text');
     texts.forEach(t => t.style.color = '#fff');
 
-    // Wideo/Muzyka dla Mój Vibe
     if(panel.id === 'vibe'){
       const video = panel.querySelector('video');
       if(video) video.play();
       const music = document.getElementById('background-music');
-      if(music) music.volume = 0.05; // przyciszenie muzyki
+      if(music) music.volume = 0.05; 
     }
   });
 
@@ -121,8 +113,8 @@ document.querySelectorAll('.side-panel').forEach(panel => {
         const video = panel.querySelector('video');
         if(video) video.pause();
         const music = document.getElementById('background-music');
-        if(music) music.volume = 0.3; // przywrócenie muzyki
+        if(music) music.volume = 0.3; 
       }
-    },100); // drobne opóźnienie, żeby nie było szarpania
+    },100);
   });
 });
