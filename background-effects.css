@@ -1,4 +1,3 @@
-/* subtelne kropki / wzorki w tle */
 .background-pattern {
   position: fixed;
   width: 200%;
@@ -17,7 +16,6 @@
   100% { transform: translate(100px,100px); }
 }
 
-/* unoszÄ…ce siÄ™ serduszka */
 .background-heart {
   position: fixed;
   width: 15px;
@@ -44,7 +42,6 @@
   }
 }
 
-/* pulsujÄ…ce ksztaÅ‚ty */
 .pulse-shape {
   position: fixed;
   width: 150px;

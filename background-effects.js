@@ -1,11 +1,9 @@
 window.addEventListener('load', () => {
 
-  // subtelny wzorek w tle
   const pattern = document.createElement('div');
   pattern.classList.add('background-pattern');
   document.body.appendChild(pattern);
 
-  // unoszące się serduszka
   const colors = ['#ff6bb5','#ff4fa3','#ffd6ec','#ff9fd4'];
 
   function createHeart() {
@@ -24,10 +22,9 @@ window.addEventListener('load', () => {
 
   setInterval(createHeart, 400);
 
-  // pulsujące kształty
-  const shapes = ['circle', 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', // romb
-                  'polygon(50% 0%, 100% 100%, 0% 100%)', // trójkąt
-                  'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)']; // kwadrat
+  const shapes = ['circle', 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
+                  'polygon(50% 0%, 100% 100%, 0% 100%)',
+                  'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'];
 
   function createPulseShape(className) {
     const shape = document.createElement('div');
@@ -35,7 +32,6 @@ window.addEventListener('load', () => {
     shape.style.clipPath = 'circle(50%)';
     document.body.appendChild(shape);
 
-    // zmiana kształtów co kilka sekund
     setInterval(() => {
       const nextShape = shapes[Math.floor(Math.random() * shapes.length)];
       shape.style.transition = 'clip-path 4s ease-in-out';

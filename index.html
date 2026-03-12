@@ -192,6 +192,51 @@
   white-space: nowrap;
   font-family:'Patrick Hand', cursive;
 }
+
+/* === STAR UI CHANGES === */
+.star-ui {
+  position: fixed;
+  top: 15px;
+  left: 90px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.star-panel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  border-radius: 14px;
+  padding: 8px 12px;
+  opacity: 0;
+  transform: translate3d(-20px,0,0) scale(.95);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(.22,.61,.36,1), width 0.5s ease;
+  width: auto;
+}
+
+.star-ui:hover .star-panel {
+  opacity: 1;
+  transform: translate3d(0,0,0) scale(1);
+}
+
+.star-text-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.star-text {
+  font-family: 'Caveat', cursive;
+  font-size: 16px;
+  color: white;
+  width: 0;
+  border-right: 2px solid white;
+  transition: width 2s steps(30, end);
+}
 </style>
 </head>
 <body>
@@ -200,11 +245,25 @@
   <div id="intro-text">Kliknij aby zobaczyć opis</div>
 </div>
 
-<!-- Znak wodny -->
 <div id="watermark">
   dev by: <span>wiewior._</span>
   <canvas id="watermark-canvas"></canvas>
 </div>
+
+<div class="star-ui">
+  <div class="star-icon">⭐</div>
+
+  <div class="star-panel">
+    <img class="star-avatar" src="https://i.imgur.com/WoOifD1.png">
+
+    <div class="star-text-container">
+      <div class="star-text">Od kiedy wiewiórki mogą być homoseksualistami..?</div>
+    </div>
+  </div>
+</div>
+
+<audio id="typing-sound" src="pisanie.mp3" preload="auto"></audio>
+<audio id="star-hover-sound" src="gwiazdka.mp3" preload="auto"></audio>
 
 <div class="container">
 
@@ -359,6 +418,45 @@
     });
   });
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const starUI = document.querySelector(".star-ui");
+  const starText = starUI.querySelector(".star-text");
+  const starPanel = starUI.querySelector(".star-panel");
+  const typingSound = document.getElementById("typing-sound");
+  const starHoverSound = document.getElementById("star-hover-sound");
+  const starIcon = starUI.querySelector(".star-icon");
+
+ let lastStarSound = 0;
+
+starIcon.addEventListener("mouseenter", () => {
+  const now = Date.now();
+  if(now - lastStarSound < 500) return;
+  lastStarSound = now;
+  starHoverSound.currentTime = 0;
+  starHoverSound.play();
+});
+
+  starUI.addEventListener("mouseenter", () => {
+    typingSound.currentTime = 0;
+    typingSound.play();
+
+    const textWidth = starText.scrollWidth;
+
+    starPanel.style.width = (textWidth + 60) + 'px'; 
+    starText.style.transition = "width 2s steps(50, end)";
+    starText.style.width = textWidth + 'px';
+  });
+
+  starUI.addEventListener("mouseleave", () => {
+    typingSound.pause();
+    typingSound.currentTime = 0;
+
+    starText.style.width = "0";
+    starPanel.style.width = "auto";
+  });
+});
+
 </script>
 
   <div class="panel vibe-panel">
@@ -415,7 +513,6 @@ document.querySelectorAll('.friend-category').forEach(cat=>{
   });
 });
 
-
 const hoverSound=document.getElementById('hover-sound');
 const clickSound=document.getElementById('click-sound');
 document.querySelectorAll('.friend-item, .card, #music-toggle, .discord-box, .panel').forEach(el=>{
@@ -424,7 +521,7 @@ document.querySelectorAll('.friend-item, .card, #music-toggle, .discord-box, .pa
 });
 
 const musicEl = document.getElementById('background-music');
-musicEl.volume = 0.8; // domyślna głośność
+musicEl.volume = 0.8; 
 const vibePanel = document.querySelector('.vibe-panel');
 const discordPanel = document.querySelector('.discord-panel');
 const vibeVideo = document.getElementById('vibe-video');
@@ -436,23 +533,19 @@ function togglePanel(panel){
 
     const isOpen = panel.classList.contains("clicked")
 
-    // Zamknij wszystkie panele i zatrzymaj wideo
     document.querySelectorAll(".panel").forEach(p=>{
       p.classList.remove("clicked")
       const vid = p.querySelector("video")
       if(vid) vid.pause()
     })
 
-    // Przywróć muzykę do normalnej głośności
     if(musicEl) musicEl.volume = 0.3
 
-    // Otwórz kliknięty panel jeśli był zamknięty
     if(!isOpen) panel.classList.add("clicked")
 
-    // Jeśli otwieramy panel vibe, odtwarzaj wideo i ścisz muzykę
     if(panel === vibePanel && !isOpen){
       vibeVideo.play()
-      if(musicEl) musicEl.volume = 0 // wycisz podczas wideo
+      if(musicEl) musicEl.volume = 0
     }
   })
 }
@@ -460,7 +553,6 @@ function togglePanel(panel){
 togglePanel(vibePanel)
 togglePanel(discordPanel)
 togglePanel(document.querySelector(".motto-panel"))
-
 
 document.querySelectorAll('.panel').forEach(panel => {
   const canvas = document.createElement('canvas');

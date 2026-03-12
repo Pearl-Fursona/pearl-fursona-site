@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
       sections.forEach((section, i) => {
         setTimeout(() => {
           section.classList.add("drop");
-        }, i * 600); // pauza między kategoriami
+        }, i * 600);
       });
 
     }

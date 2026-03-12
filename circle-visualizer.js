@@ -27,7 +27,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const bars = bufferLength;
-  rotation += 0.01; // obrót całego koła
+  rotation += 0.01; 
   for(let i = 0; i < bars; i++){
     const angle = (i / bars) * 2 * Math.PI + rotation;
     const barHeight = dataArray[i] / 2;
@@ -40,7 +40,6 @@ function draw() {
     ctx.stroke();
   }
   
-  // pulsujące środkowe kółko
   const avg = dataArray.reduce((a,b) => a+b, 0)/dataArray.length;
   const pulseRadius = 8 + avg/50;
   ctx.beginPath();
@@ -49,7 +48,6 @@ function draw() {
   ctx.fill();
 }
 
-// AudioContext wymaga user interaction, więc start przy pierwszym kliknięciu strony
 document.body.addEventListener('click', () => {
   audioCtx.resume().then(() => {
     draw();
